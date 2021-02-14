@@ -11,10 +11,13 @@ int day_of_the_year(int day, int month, int year); //Deklaration der Funktionspr
 int is_leapyear(int year);
 int get_days_for_month(int month, int year);
 int exists_date(int day, int month, int year);
+int iput_data(int day, int month, int year);
 
 int main()
 {
-    printf("Tag des Jahres: %i\n", day_of_the_year(31, 12, 2018));
+    int day = 0, month = 0, year = 0;
+    input_date(&day, &month, &year);
+    printf("Tag des Jahres: %i\n", day_of_the_year(day, month, year));
     return 0;
 }
 
@@ -35,7 +38,6 @@ int day_of_the_year(int day, int month, int year)
     {
         for(int i = 1; i < month; i++)//Gehe von Monat 1 bis eingegebenen Monat
         {
-            printf("test: %i", get_days_for_month(i, year));
             ergebnis = ergebnis + get_days_for_month(i, year);//Addiere alle Tage zusammen
         }
         ergebnis = ergebnis + day;
@@ -45,6 +47,30 @@ int day_of_the_year(int day, int month, int year)
     {
         return -1; //Datum ist ungueltig
     }
+}
+
+/**
+ * Die Funktion liest 3 Ganzzahlwerte (Integer) ein, für Tag, Monat und Jahr. Wenn das angegebene Datum
+ * ungültig ist, wird erneut eingelesen, solange bis ein gültiges Datum eingegeben wurde.
+ *
+ * @param year: Zeiger auf Jahr
+ * @param month: Zeifer auf Monat
+ * @param day: Zeiger auf Tag
+ * @return kein Rueckgabewert
+ **/
+void input_date(int *day, int *month, int *year)
+{
+    do
+    {
+        printf("Geben Sie den Tag ein: \n");
+        scanf("%d", &*day);
+        fflush(stdin);
+        printf("Gben Sie den Monat ein: \n");
+        scanf("%d", &*month);
+        fflush(stdin);
+        printf("Geben Sie das Jahr ein: \n");
+        scanf("%d", &*year);
+    } while (exists_date(*day, *month, *year) == 0);
 }
 
 /**
