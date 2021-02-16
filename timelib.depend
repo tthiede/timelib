@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1613384410 source:g:\repositories\ausbildung\timelib\time.c
+	<stdio.h>
+	<stdlib.h>
+
+1613384269 source:g:\repositories\ausbildung\timelib\main.c
+	<stdio.h>
+	<stdlib.h>
+	"time.h"
+
+1613384200 g:\repositories\ausbildung\timelib\time.h
+
