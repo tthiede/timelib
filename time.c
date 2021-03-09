@@ -7,6 +7,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct date
+{
+    int day, month, year;
+};
+
 /**
  * Die Funktion berechnet für ein gegebenes Datum des gregorianischen Kalenders bestehend aus Tag, Monat
  * und Jahr die Nummer des Tages, gezählt von Jahresbeginn (1. Januar) an. Schaltjahre werden bei der
@@ -17,16 +22,16 @@
  * @param year: Jahr
  * @return Nummer des Tages
  **/
-int day_of_the_year(int day, int month, int year)
+int day_of_the_year(struct date dt)
 {
     int ergebnis = 0;
-    if (exists_date(day, month, year) == 1) //Pruefe ob Datum gueltig ist
+    if (exists_date(dt) == 1) //Pruefe ob Datum gueltig ist
     {
-        for(int i = 1; i < month; i++)//Gehe von Monat 1 bis eingegebenen Monat
+        for(int i = 1; i < dt.month; i++)//Gehe von Monat 1 bis eingegebenen Monat
         {
-            ergebnis = ergebnis + get_days_for_month(i, year);//Addiere alle Tage zusammen
+            ergebnis = ergebnis + get_days_for_month(i, dt.year);//Addiere alle Tage zusammen
         }
-        ergebnis = ergebnis + day;
+        ergebnis = ergebnis + dt.day;
         return ergebnis;
     }
     else
@@ -44,19 +49,19 @@ int day_of_the_year(int day, int month, int year)
  * @param day: Zeiger auf Tag
  * @return kein Rueckgabewert
  **/
-void input_date(int *day, int *month, int *year)
+void input_date(struct date *dt)
 {
     do
     {
         printf("Geben Sie den Tag ein: \n");
-        scanf("%d", &*day);
+        scanf("%i", &dt->day);
         fflush(stdin);
         printf("Gben Sie den Monat ein: \n");
-        scanf("%d", &*month);
+        scanf("%i", &dt->month);
         fflush(stdin);
         printf("Geben Sie das Jahr ein: \n");
-        scanf("%d", &*year);
-    } while (exists_date(*day, *month, *year) == 0);
+        scanf("%i", &dt->year);
+    } while (exists_date(dt) == 0);
 }
 
 /**
@@ -73,7 +78,7 @@ void input_date(int *day, int *month, int *year)
  **/
 int is_leapyear(int year)
 {
-    if (year < 1582)
+    if (year <= 1582 && year >= 2400)
     {
         return -1;
     }
@@ -130,7 +135,6 @@ int get_days_for_month(int month, int year)
     }
     if  (is_leapyear(year) == -1) //Jahr ist ungueltig
     {
-        printf("Bitte geben Sie ein Jahr nach 1582 ein! \n");
         return -1;
     }
     return ergebnis;
@@ -147,14 +151,14 @@ int get_days_for_month(int month, int year)
 * gültig ist
 * 0, wenn das Datum nicht gültig ist
 **/
-int exists_date(int day, int month, int year)
+int exists_date(struct date dt)
 {
     int tage_pro_monat[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
     int tage_pro_monat_schaltjahr[12] = {31,29,31,30,31,30,31,31,30,31,30,31};
 
-    if (is_leapyear(year) == 1) //Jahr ist Schaltjahr
+    if (is_leapyear(dt.year) == 1) //Jahr ist Schaltjahr
     {
-        if ((day <= tage_pro_monat_schaltjahr[month - 1]) && (month <= 12) && (year >= 1582) && (year <= 2400)) //Ueberpreufe alle Anforderungen
+        if ((dt.day <= tage_pro_monat_schaltjahr[dt.month - 1]) && (dt.month <= 12) && (dt.year >= 1582) && (dt.year <= 2400)) //Ueberpreufe alle Anforderungen
         {
             return 1;
         }
@@ -164,9 +168,9 @@ int exists_date(int day, int month, int year)
         }
     }
 
-    if  (is_leapyear(year) == 0) //Jahr ist kein Schaltjahr
+    if  (is_leapyear(dt.year) == 0) //Jahr ist kein Schaltjahr
     {
-         if ((day <= tage_pro_monat[month - 1]) && (month <= 12) && (year >= 1582) && (year <= 2400))
+         if ((dt.day <= tage_pro_monat[dt.month - 1]) && (dt.month <= 12) && (dt.year >= 1582) && (dt.year <= 2400))
          {
              return 1;
          }

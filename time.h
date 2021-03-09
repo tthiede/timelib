@@ -7,11 +7,13 @@
 #ifndef TIME_H_INCLUDED
 #define TIME_H_INCLUDED
 
-int day_of_the_year(int day, int month, int year); //Deklaration der Funktionsprototypen
+struct date
+{
+    int day, month, year;
+};
+int day_of_the_year(struct date dt); //Deklaration der Funktionsprototypen
 int is_leapyear(int year);
-int get_days_for_month(int month, int year);
-int exists_date(int day, int month, int year);
-int iput_data(int day, int month, int year);
-
-
+int get_days_for_month(struct date *dt);
+int exists_date(struct date *dt);
+int iput_data(struct date *dt);
 #endif // TIME_H_INCLUDED
