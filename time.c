@@ -17,22 +17,21 @@ struct date
  * und Jahr die Nummer des Tages, gezählt von Jahresbeginn (1. Januar) an. Schaltjahre werden bei der
  * Berechnung berücksichtigt. Ist das übergebene Datum ungültig, beträgt der Rückgabewert -1.
  *
- * @param day: Tag
- * @param month: Monat
- * @param year: Jahr
+ * @param struct date dt: Datum
  * @return Nummer des Tages
+ * -1 wenn das Datum ungültig ist
  **/
 int day_of_the_year(struct date dt)
 {
-    int ergebnis = 0;
+    int result = 0;
     if (exists_date(dt) == 1) //Pruefe ob Datum gueltig ist
     {
         for(int i = 1; i < dt.month; i++)//Gehe von Monat 1 bis eingegebenen Monat
         {
-            ergebnis = ergebnis + get_days_for_month(i, dt.year);//Addiere alle Tage zusammen
+            result = result + get_days_for_month(i, dt.year);//Addiere alle Tage zusammen
         }
-        ergebnis = ergebnis + dt.day;
-        return ergebnis;
+        result = result + dt.day;
+        return result;
     }
     else
     {
@@ -44,24 +43,23 @@ int day_of_the_year(struct date dt)
  * Die Funktion liest 3 Ganzzahlwerte (Integer) ein, für Tag, Monat und Jahr. Wenn das angegebene Datum
  * ungültig ist, wird erneut eingelesen, solange bis ein gültiges Datum eingegeben wurde.
  *
- * @param year: Zeiger auf Jahr
- * @param month: Zeifer auf Monat
- * @param day: Zeiger auf Tag
+ * @param struct date dt: Datum
  * @return kein Rueckgabewert
  **/
 void input_date(struct date *dt)
 {
     do
     {
-        printf("Geben Sie den Tag ein: \n");
+        printf("Day: \n");
         scanf("%i", &dt->day);
         fflush(stdin);
-        printf("Gben Sie den Monat ein: \n");
+        printf("Month: \n");
         scanf("%i", &dt->month);
         fflush(stdin);
-        printf("Geben Sie das Jahr ein: \n");
+        printf("Year: \n");
         scanf("%i", &dt->year);
-    } while (exists_date(dt) == 0);
+    }
+    while (exists_date(dt) == 0);
 }
 
 /**
@@ -153,12 +151,12 @@ int get_days_for_month(int month, int year)
 **/
 int exists_date(struct date dt)
 {
-    int tage_pro_monat[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
-    int tage_pro_monat_schaltjahr[12] = {31,29,31,30,31,30,31,31,30,31,30,31};
+    int days_per_month[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+    int days_per_month_leap_year[12] = {31,29,31,30,31,30,31,31,30,31,30,31};
 
     if (is_leapyear(dt.year) == 1) //Jahr ist Schaltjahr
     {
-        if ((dt.day <= tage_pro_monat_schaltjahr[dt.month - 1]) && (dt.month <= 12) && (dt.year >= 1582) && (dt.year <= 2400)) //Ueberpreufe alle Anforderungen
+        if ((dt.day <= days_per_month_leap_year[dt.month - 1]) && (dt.month <= 12) && (dt.year >= 1582) && (dt.year <= 2400)) //Ueberpreufe alle Anforderungen
         {
             return 1;
         }
@@ -170,13 +168,13 @@ int exists_date(struct date dt)
 
     if  (is_leapyear(dt.year) == 0) //Jahr ist kein Schaltjahr
     {
-         if ((dt.day <= tage_pro_monat[dt.month - 1]) && (dt.month <= 12) && (dt.year >= 1582) && (dt.year <= 2400))
-         {
-             return 1;
-         }
-         else
-         {
-             return 0;
-         }
+        if ((dt.day <= days_per_month[dt.month - 1]) && (dt.month <= 12) && (dt.year >= 1582) && (dt.year <= 2400))
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 }
